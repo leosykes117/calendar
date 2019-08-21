@@ -1,8 +1,7 @@
 <template>
-  <ul v-if="totalDaysMonth != 0" class="days">
-    <li v-for="(item, index) in totalDaysMonth" :key="index">
-      <a v-if="item > currentMonth.startDayOfWeek">{{ item - currentMonth.startDayOfWeek }}</a>
-      <a v-else></a>
+  <ul v-if="currentMonth.length != 0" class="days">
+    <li v-for="(item, index) in currentMonth.days" :key="index">
+      <a :class="item.useClass">{{ item.index }}</a>
     </li>
   </ul>
 </template>
@@ -17,23 +16,6 @@ export default {
   },
   data() {
     return {};
-  },
-  computed: {
-    totalDaysMonth () {
-      console.log("on computed");
-      if (this.currentMonth.momentDate != undefined) {
-        if (
-          this.currentMonth.momentDate.month() == 1 &&
-          this.currentMonth.momentDate.isLeapYear()
-        ) {
-          return (
-            this.currentMonth.data.days + 1 + this.currentMonth.startDayOfWeek
-          );
-        }
-        return this.currentMonth.data.days + this.currentMonth.startDayOfWeek;
-      }
-      return 0;
-    }
   }
 };
 </script>
@@ -56,8 +38,7 @@ export default {
 
 /* Highlight the "current" day */
 .days li .active {
+  border-radius: 5px;
   padding: 5px;
-  background: #1abc9c;
-  color: white !important;
 }
 </style>

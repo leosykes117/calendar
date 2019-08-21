@@ -23,6 +23,7 @@
 
 <script>
 import moment from "moment-timezone";
+import Calendar from '../../calendarModules/calendar';
 import CalendarWeek from "./Week.vue";
 import CalendarDays from "./DaysMonth.vue";
 
@@ -34,56 +35,8 @@ export default {
   data() {
     return {
       date: {},
-      months: {
-        "1": {
-          name: "Enero",
-          days: 31
-        },
-        "2": {
-          name: "Febrero",
-          days: 28
-        },
-        "3": {
-          name: "Marzo",
-          days: 31
-        },
-        "4": {
-          name: "Abril",
-          days: 30
-        },
-        "5": {
-          name: "Mayo",
-          days: 31
-        },
-        "6": {
-          name: "Junio",
-          days: 30
-        },
-        "7": {
-          name: "Julio",
-          days: 31
-        },
-        "8": {
-          name: "Agosto",
-          days: 31
-        },
-        "9": {
-          name: "Septiembre",
-          days: 30
-        },
-        "10": {
-          name: "Octubre",
-          days: 31
-        },
-        "11": {
-          name: "Noviembre",
-          days: 30
-        },
-        "12": {
-          name: "Diciembre",
-          days: 31
-        }
-      },
+      timer: undefined,
+      now: {},
       month: {}
     };
   },
@@ -93,21 +46,6 @@ export default {
     },
     prevMonth() {
       this.date = this.date.clone().subtract(1, "months");
-    },
-    zeller(month, year) {
-      let a = Math.trunc((14 - month) / 12);
-      let y = year - a;
-      let m = month + 12 * a - 2;
-      let day = 1;
-      let h =
-        (day +
-          y +
-          Math.trunc(y / 4) -
-          Math.trunc(y / 100) +
-          Math.trunc(y / 400) +
-          Math.trunc((31 * m) / 12)) %
-        7;
-      return Math.trunc(h);
     }
   },
   filters: {
@@ -118,23 +56,17 @@ export default {
   created() {
     console.log("created calendar header");
     this.date = moment(Date.now()).tz("America/Mexico_City");
-    console.log(this.date.format("LL"));
   },
   computed: {
-    monthName() {
-      return this.months[this.date.month() + 1].name;
+    monthName () {
+      return this.month.name;
     }
   },
   watch: {
-    date(newVal) {
-      this.$set(this.month, "data", this.months[newVal.month() + 1]);
-      this.$set(this.month, "momentDate", newVal.clone());
-      this.$set(
-        this.month,
-        "startDayOfWeek",
-        this.zeller(newVal.month() + 1, newVal.year())
-      );
-      console.log("MONTH: ", this.month);
+    date (newVal) {
+      console.log("on watch date-->", newVal);
+      let calendar = new Calendar(newVal);
+      this.month = calendar.generateMonth();
     }
   }
 };
