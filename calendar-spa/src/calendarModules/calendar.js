@@ -120,14 +120,14 @@ class Calendar {
 	generateMonth() {
 		let days = [];
 		let startDayOfWeek = this.zeller();
-		let pascuaDate = moment(this.pascua())
+		let pascuaDate = moment(this.pascua());
 		this._month.days += (this._month.days == 28 && moment([this._year]).isLeapYear()) ? startDayOfWeek + 1 : startDayOfWeek;
 
 		for (let i = 1; i <= this._month.days; i++) {
 			let day = {};
 			if (i > startDayOfWeek) {
 				day.index = i - startDayOfWeek;
-				let event = (pascuaDate.month() != this._month.index) ? this.setDay(day.index) : this.setDay(day.index, pascuaDate);
+				let event = (pascuaDate.month() + 1  != this._month.index) ? this.setDay(day.index) : this.setDay(day.index, pascuaDate);
 				day.useClass = event.style;
 				day.eventName = event.eventName;
 			}
@@ -195,8 +195,7 @@ class Calendar {
 		if (day == 25 && month == 4 && d == 28 && e == 6 && a > 10) {
 			day = 18;
 		}
-
-		return new Date(this._year, month, day);
+		return new Date(this._year, month - 1, day);
 	}
 }
 
