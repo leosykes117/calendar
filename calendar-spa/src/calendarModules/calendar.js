@@ -71,19 +71,75 @@ class Calendar {
 		this._year = date.year();
 	}
 
-	get date () {
+	get date() {
 		return this._date;
 	}
 
-	get month () {
+	get month() {
 		return this._month;
 	}
 
-	get year () {
+	get year() {
 		return this._year;
 	}
 
-	zeller () {
+	setDay(currentDay, pascuaDate) {
+		let dateInfo = {};
+		let nowDate = moment([this._year, this._month.index - 1, currentDay]);
+		
+		if (nowDate.format('D/M/YYYY') == moment(Date.now()).format('D/M/YYYY')) {
+
+			dateInfo.style = 'active has-background-success has-text-white';
+
+		} else if (pascuaDate != undefined && nowDate.date() == pascuaDate.date()) {
+
+			dateInfo.style = 'active has-background-grey has-text-white';
+			dateInfo.eventName = "Domingo de Pascua"
+
+		} else {
+			if (holidays.hasOwnProperty(`${this._month.index}`)) {
+				for (let date of holidays[this._month.index].dates) {
+					if (date.day == currentDay) {
+						if (date.hasOwnProperty('each')) {
+							if ((this._year - date.each.pivot) % date.each.year == 0) {
+								dateInfo.style = 'active has-background-warning';
+								dateInfo.eventName = date.name
+							}
+						} else {
+							dateInfo.style = 'active has-background-warning';
+							dateInfo.eventName = date.name
+						}
+						break;
+					}
+				}
+			}
+		}
+		return dateInfo;
+	}
+
+	generateMonth() {
+		let days = [];
+		let startDayOfWeek = this.zeller();
+		let pascuaDate = moment(this.pascua())
+		this._month.days += (this._month.days == 28 && moment([this._year]).isLeapYear()) ? startDayOfWeek + 1 : startDayOfWeek;
+
+		for (let i = 1; i <= this._month.days; i++) {
+			let day = {};
+			if (i > startDayOfWeek) {
+				day.index = i - startDayOfWeek;
+				let event = (pascuaDate.month() != this._month.index) ? this.setDay(day.index) : this.setDay(day.index, pascuaDate);
+				day.useClass = event.style;
+				day.eventName = event.eventName;
+			}
+			days.push(day);
+		}
+		return {
+			"name": this._month.name,
+			days
+		};
+	}
+
+	zeller() {
 		let a = Math.trunc((14 - this._month.index + 1) / 12);
 		let y = this._year - a;
 		let m = this._month.index + 12 * a - 2;
@@ -99,40 +155,48 @@ class Calendar {
 		return Math.trunc(h);
 	}
 
-	setDay (currentDay) {
-		let style;
-		if (`${currentDay}/${this._month.index}/${this._year}` == moment(Date.now()).format('D/M/YYYY')) {
-			style = 'active has-background-success has-text-white'
+	pascua() {
+		let M, N;
+
+		if (this._year > 1583 && this._year < 1699) {
+			[M, N] = [22, 2];
+		} else if (this._year > 1700 && this._year < 1799) {
+			[M, N] = [23, 3];
+		} else if (this._year > 1800 && this._year < 1899) {
+			[M, N] = [23, 4];
+		} else if (this._year > 1900 && this._year < 2099) {
+			[M, N] = [24, 5];
+		} else if (this._year > 2100 && this._year < 2199) {
+			[M, N] = [24, 6];
+		} else if (this._year > 2200 && this._year < 2299) {
+			[M, N] = [25, 0];
+		}
+
+		let a = this._year % 19;
+		let b = this._year % 4;
+		let c = this._year % 7;
+		let d = ((19 * a) + M) % 30;
+		let e = ((2 * b) + (4 * c) + (6 * d) + N) % 7;
+		let f = d + e;
+		let day, month;
+
+		if (f < 10) {
+			day = f + 22;
+			month = 3;
 		} else {
-			if (holidays.hasOwnProperty(`${this._month.index}`)) {
-				for (let date of holidays[this._month.index].dates) {
-					if (date.day == currentDay) {
-						style = 'active has-background-warning';
-						break;
-					}
-				}
-			}
+			day = f - 9;
+			month = 4;
 		}
-		return style;
-	}
 
-	generateMonth () {
-		let days = [];
-		let startDayOfWeek = this.zeller();
-		this._month.days += (this._month.days == 28 && moment([this._year]).isLeapYear()) ? startDayOfWeek + 1 : startDayOfWeek;
-
-		for (let i = 1; i <= this._month.days; i++) {
-			let day = {};
-			if (i > startDayOfWeek) {
-				day.index = i - startDayOfWeek;
-				day.useClass = this.setDay(day.index);
-			}
-			days.push(day);
+		if (day == 26 && month == 4) {
+			day = 19;
 		}
-		return {
-			"name": this._month.name,
-			days
-		};
+
+		if (day == 25 && month == 4 && d == 28 && e == 6 && a > 10) {
+			day = 18;
+		}
+
+		return new Date(this._year, month, day);
 	}
 }
 

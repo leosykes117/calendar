@@ -1,7 +1,7 @@
 <template>
   <ul v-if="currentMonth.length != 0" class="days">
     <li v-for="(item, index) in currentMonth.days" :key="index">
-      <a :class="item.useClass">{{ item.index }}</a>
+      <a :class="item.useClass" @click="selectDate(item)">{{ item.index }}</a>
     </li>
   </ul>
 </template>
@@ -16,6 +16,11 @@ export default {
   },
   data() {
     return {};
+  },
+  methods: {
+    selectDate (day) {
+      this.$emit('select', day)
+    }
   }
 };
 </script>

@@ -29,16 +29,6 @@
 			"dayOfWeek": 1
 		}]
 	},
-	"4": {
-		"index": 4,
-		"monthName": "Abril",
-		"dates": [{
-			"name": "Día del Niño",
-			"day": 30,
-			"vacation": false,
-			"dayOfWeek": null
-		}]
-	},
 	"5": {
 		"index": 5,
 		"monthName": "Mayo",
@@ -47,11 +37,6 @@
 			"day": 1,
 			"vacation": true,
 			"dayOfWeek": 1
-		}, {
-			"name": "Dia de la Madres",
-			"day": 10,
-			"vacation": false,
-			"dayOfWeek": null
 		}]
 	},
 	"9": {
@@ -79,9 +64,13 @@
         "monthName": "Diciembre",
         "dates": [{
             "name": "Transmisión del Poder Ejecutivo Federal",
-            "day": 25,
+            "day": 1,
             "vacation": true,
-            "dayOfWeek": null
+			"dayOfWeek": null,
+			"each": {
+				"year": 6,
+				"pivot": 1934
+			} 
         },{
             "name": "Navidad",
             "day": 25,

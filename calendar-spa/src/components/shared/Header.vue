@@ -17,13 +17,18 @@
       </div>
     </section>
     <calendar-week></calendar-week>
-    <calendar-days :currentMonth="month"></calendar-days>
+    <calendar-days :currentMonth="month" @select="setSelectedDay"></calendar-days>
+    <article v-if="showCard" class="message" :class="selectedDate.useClass">
+      <div class="message-body">
+        {{ selectedDate.eventName | hasEventName}}
+      </div>
+    </article>
   </div>
 </template>
 
 <script>
 import moment from "moment-timezone";
-import Calendar from '../../calendarModules/calendar';
+import Calendar from "../../calendarModules/calendar";
 import CalendarWeek from "./Week.vue";
 import CalendarDays from "./DaysMonth.vue";
 
@@ -37,7 +42,9 @@ export default {
       date: {},
       timer: undefined,
       now: {},
-      month: {}
+      month: {},
+      selectedDate: {},
+      showCard: false
     };
   },
   methods: {
@@ -46,11 +53,17 @@ export default {
     },
     prevMonth() {
       this.date = this.date.clone().subtract(1, "months");
+    },
+    setSelectedDay(day) {
+      this.selectedDate = day;
     }
   },
   filters: {
     formatDateYear(val) {
       return val != undefined ? val.format("YYYY") : "";
+    }, 
+    hasEventName (val) {
+      return val || 'Sin eventos';
     }
   },
   created() {
@@ -58,19 +71,26 @@ export default {
     this.date = moment(Date.now()).tz("America/Mexico_City");
   },
   computed: {
-    monthName () {
+    monthName() {
       return this.month.name;
     }
   },
   watch: {
-    date (newVal) {
-      console.log("on watch date-->", newVal);
+    date(newVal) {
+      console.log("on watch date");
       let calendar = new Calendar(newVal);
       this.month = calendar.generateMonth();
+    },
+    selectedDate () {
+      console.log("SE DISPARO EL EVENTO:");
+      this.showCard = true;
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.message {
+  margin: 15px auto;
+}
 </style>
