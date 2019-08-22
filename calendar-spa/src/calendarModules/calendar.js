@@ -86,7 +86,7 @@ class Calendar {
 	setDay(currentDay, pascuaDate) {
 		let dateInfo = {};
 		let nowDate = moment([this._year, this._month.index - 1, currentDay]);
-		
+
 		if (nowDate.format('D/M/YYYY') == moment(Date.now()).format('D/M/YYYY')) {
 
 			dateInfo.style = 'active has-background-success has-text-white';
@@ -140,7 +140,7 @@ class Calendar {
 	}
 
 	zeller() {
-		let a = Math.trunc((14 - this._month.index + 1) / 12);
+		let a = Math.trunc((14 - this._month.index) / 12);
 		let y = this._year - a;
 		let m = this._month.index + 12 * a - 2;
 		let day = 1;
