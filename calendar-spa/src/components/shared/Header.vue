@@ -50,9 +50,11 @@ export default {
   methods: {
     nextMonth() {
       this.date = this.date.clone().add(1, "months");
+      this.showCard &= false;
     },
     prevMonth() {
       this.date = this.date.clone().subtract(1, "months");
+      this.showCard &= false;
     },
     setSelectedDay(day) {
       this.selectedDate = day;

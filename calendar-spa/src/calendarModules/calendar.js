@@ -105,6 +105,9 @@ class Calendar {
 								dateInfo.style = 'active has-background-warning';
 								dateInfo.eventName = date.name
 							}
+						} else if (date.birthdate) {
+							dateInfo.style = 'active has-background-info has-text-white';
+							dateInfo.eventName = date.name
 						} else {
 							dateInfo.style = 'active has-background-warning';
 							dateInfo.eventName = date.name

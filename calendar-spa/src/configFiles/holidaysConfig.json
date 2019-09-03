@@ -29,6 +29,15 @@
 			"dayOfWeek": 1
 		}]
 	},
+	"4": {
+		"index": 4,
+		"monthName": "Abril",
+		"dates": [{
+			"name": "Cumpleaños de Leonardo",
+			"day": 26,
+			"birthdate": true
+		}]
+	},
 	"5": {
 		"index": 5,
 		"monthName": "Mayo",
@@ -37,6 +46,15 @@
 			"day": 1,
 			"vacation": true,
 			"dayOfWeek": 1
+		}]
+	},
+	"8": {
+		"index": 6,
+		"monthName": "Agosto",
+		"dates": [{
+			"name": "Cumpleaños de Francisco",
+			"day": 27,
+			"birthdate": true
 		}]
 	},
 	"9": {
