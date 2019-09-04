@@ -58,6 +58,7 @@ export default {
     },
     setSelectedDay(day) {
       this.selectedDate = day;
+      this.$emit('select', day, this.showCard);
     }
   },
   filters: {
@@ -86,7 +87,11 @@ export default {
     selectedDate () {
       console.log("SE DISPARO EL EVENTO:");
       this.showCard = true;
-    }
+    },
+    showCard (val) {
+      console.log("ON CHANGE SHOW CARD", val);
+      this.$emit('select', this.selectedDate, val);
+    } 
   }
 };
 </script>
