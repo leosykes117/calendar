@@ -133,6 +133,7 @@ class Calendar {
 				let event = (pascuaDate.month() + 1  != this._month.index) ? this.setDay(day.index) : this.setDay(day.index, pascuaDate);
 				day.useClass = event.style;
 				day.eventName = event.eventName;
+				day.timeStamp = new Date(this._year, this._month.index - 1);
 			}
 			days.push(day);
 		}

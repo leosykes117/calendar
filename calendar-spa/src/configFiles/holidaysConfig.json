@@ -17,6 +17,10 @@
 			"day": 5,
 			"vacation": true,
 			"dayOfWeek": 1
+		},{
+			"name": "Cumpleaños de Bringas",
+			"day": 15,
+			"birthdate": true
 		}]
 	},
 	"3": {
@@ -52,7 +56,7 @@
 		"index": 6,
 		"monthName": "Agosto",
 		"dates": [{
-			"name": "Cumpleaños de Francisco",
+			"name": "Cumpleaños de Panchito",
 			"day": 27,
 			"birthdate": true
 		}]

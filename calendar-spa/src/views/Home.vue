@@ -1,10 +1,10 @@
 <template>
   <div class="container is-clipped">
     <calendar-header msg="Welcome to Your Vue.js App" @select="newEvent" />
-    <button id="btnAddEvent" class="button is-primary is-rounded" v-show="showButton" @click="showModal()">
+    <button id="btnAddEvent" class="button is-primary is-rounded is-large" v-show="showButton" @click="showModal()">
       <font-awesome-icon icon="calendar-plus" />
     </button>
-    <calendar-modal :active="modal" @show="closeModal"/>
+    <calendar-modal :active="modal" :inDate="eventDate" @show="closeModal"/>
   </div>
 </template>
 <script>
@@ -29,7 +29,7 @@ export default {
     return {
       showButton: false,
       modal: false,
-      eventDate: undefined
+      eventDate: {}
     }
   },
   methods: {
