@@ -1,0 +1,30 @@
+-- Schema creation
+CREATE SCHEMA app;
+
+-- Reeeevoke privileges from 'public' role
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON DATABASE godb FROM PUBLIC;
+
+-- Read-only role
+CREATE ROLE readonly;
+GRANT CONNECT ON DATABASE godb TO readonly;
+GRANT USAGE ON SCHEMA app TO readonly;
+GRANT SELECT ON ALL TABLES IN SCHEMA app TO readonly;
+ALTER DEFAULT PRIVILEGES IN SCHEMA app GRANT SELECT ON TABLES TO readonly;
+
+-- Read/write role
+CREATE ROLE readwrite;
+GRANT CONNECT ON DATABASE godb TO readwrite;
+GRANT USAGE, CREATE ON SCHEMA app TO readwrite;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA app TO readwrite;
+ALTER DEFAULT PRIVILEGES IN SCHEMA app GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO readwrite;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA app TO readwrite;
+ALTER DEFAULT PRIVILEGES IN SCHEMA app GRANT USAGE ON SEQUENCES TO readwrite;
+
+-- Users creation
+CREATE USER app_dev WITH PASSWORD '100PerApi';
+CREATE USER reporting WITH PASSWORD '100%Reportes';
+
+-- Grant privileges to users
+GRANT readwrite TO app_dev;
+GRANT readonly TO reporting;

@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+    db:
+        image: postgres:14.2-alpine3.15
+        container_name: rails-calendar-postgres
+        restart: always
+        ports:
+            - '5433:5432'
+        env_file:
+            - ./docker/pg/.env
+        volumes:
+            - ./docker/pg/pgdata:/var/lib/postgresql/data
+#            - ./docker/pg/initdb.d/:/docker-entrypoint-initdb.d/
